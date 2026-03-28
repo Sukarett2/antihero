@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Sukaretto
 // SPDX-License-Identifier: AGPL-3.0-only
 
-using HarmonyLib;
 using com.ultrabit.bitheroes.core;
+using HarmonyLib;
 
 namespace antihero;
 
@@ -10,6 +10,7 @@ public static class Utils
 {
     public static void Invoke(object obj, string methodName, params object[] args) =>
         AccessTools.Method(obj.GetType(), methodName).Invoke(obj, args);
+
     public static T Invoke<T>(object obj, string methodName, params object[] args) =>
         (T)AccessTools.Method(obj.GetType(), methodName).Invoke(obj, args);
 

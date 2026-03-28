@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Sukaretto
 // SPDX-License-Identifier: AGPL-3.0-only
 
-using MelonLoader;
-using HarmonyLib;
-using com.ultrabit.bitheroes.core;
-using com.ultrabit.bitheroes.ui.menu;
-using com.ultrabit.bitheroes.ui.dungeon;
 using antihero.Patches;
+using com.ultrabit.bitheroes.core;
+using com.ultrabit.bitheroes.ui.dungeon;
+using com.ultrabit.bitheroes.ui.menu;
+using HarmonyLib;
+using MelonLoader;
 
 namespace antihero.States;
 
@@ -18,7 +18,7 @@ public class DungeonState : State
     {
         Harmony.Patch(
             AccessTools.Method(typeof(MenuInterfaceAutoPilotTile), nameof(MenuInterfaceAutoPilotTile.DoClick)),
-            prefix: new HarmonyMethod(typeof(DungeonPatches), nameof(DungeonPatches.OnAutoPilotClick))
+            new HarmonyMethod(typeof(DungeonPatches), nameof(DungeonPatches.OnAutoPilotClick))
         );
     }
 
@@ -32,7 +32,7 @@ public class DungeonState : State
             return;
         }
 
-        var inBattle = GameData.instance.PROJECT.battle != null;
+        bool inBattle = GameData.instance.PROJECT.battle != null;
         GameData.instance.PROJECT.character.autoPilot = inBattle;
         if (inBattle) return;
 
@@ -57,7 +57,7 @@ public class DungeonState : State
         Harmony.UnpatchAll(Harmony.Id);
         Mod.Instance.Panel?.DungeonToggle.SetIsOnWithoutNotify(false);
     }
-    
+
     private static List<DungeonNode> GetShortestPath(Dungeon dungeon, DungeonNode from, DungeonNode to) =>
         Utils.Invoke<List<DungeonNode>>(dungeon, "GetShortestPath", from, to, false);
 
@@ -68,7 +68,8 @@ public class DungeonState : State
 
         List<DungeonNode>? shortestPath = null;
         foreach (var node in objectNodes.Where(n =>
-            !n.empty && n.obj?.type is DungeonObject.TYPE_ENEMY or DungeonObject.TYPE_BOSS && !n.obj.ignorePath))
+                     !n.empty && n.obj?.type is DungeonObject.TYPE_ENEMY or DungeonObject.TYPE_BOSS &&
+                     !n.obj.ignorePath))
         {
             var path = GetShortestPath(dungeon, currentNode, node);
             if (shortestPath == null || path.Count < shortestPath.Count)

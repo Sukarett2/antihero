@@ -1,26 +1,27 @@
 ﻿// SPDX-FileCopyrightText: 2026 Sukaretto
 // SPDX-License-Identifier: AGPL-3.0-only
 
-using MelonLoader;
-using UniverseLib.UI;
-using com.ultrabit.bitheroes.core;
+using antihero;
 using antihero.States;
+using com.ultrabit.bitheroes.core;
+using MelonLoader;
 using UnityEngine;
+using UniverseLib;
 using UniverseLib.Config;
+using UniverseLib.UI;
 
-[assembly: MelonInfo(typeof(antihero.Mod), "antihero", "0.0.1", "Sukaretto")]
+[assembly: MelonInfo(typeof(Mod), "antihero", "0.0.1", "Sukaretto")]
 [assembly: MelonGame("Ultrabit", "Bit Heroes")]
 
 namespace antihero;
 
 public class Mod : MelonMod
 {
-    public static Mod Instance { get; private set; } = null!;
-
     private bool _isGameLoaded;
 
     private State _state = new IdleState();
     private UIBase? _ui;
+    public static Mod Instance { get; private set; } = null!;
     public Panel? Panel { get; private set; }
 
     public override void OnInitializeMelon() => Instance = this;
@@ -38,7 +39,7 @@ public class Mod : MelonMod
         {
             _isGameLoaded = true;
             MelonLogger.Msg("game loaded.");
-            UniverseLib.Universe.Init(1f, OnInitializeUniverse, (_, _) => {}, new UniverseLibConfig());
+            Universe.Init(1f, OnInitializeUniverse, (_, _) => { }, new UniverseLibConfig());
         }
 
         // Panel exists only when game is loaded.

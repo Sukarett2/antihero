@@ -1,17 +1,20 @@
 // SPDX-FileCopyrightText: 2026 Sukaretto
 // SPDX-License-Identifier: AGPL-3.0-only
 
+using antihero.States;
+using com.ultrabit.bitheroes.core;
 using UnityEngine;
 using UnityEngine.UI;
 using UniverseLib.UI;
 using UniverseLib.UI.Panels;
-using antihero.States;
-using com.ultrabit.bitheroes.core;
 
 namespace antihero;
 
 public class Panel(UIBase owner) : PanelBase(owner)
 {
+    public Toggle DungeonToggle = null!;
+
+    public Toggle FishingToggle = null!;
     public override string Name => "AntiHero";
     public override int MinWidth => 100;
     public override int MinHeight => 200;
@@ -19,24 +22,21 @@ public class Panel(UIBase owner) : PanelBase(owner)
     public override Vector2 DefaultAnchorMax => new(0.75f, 0.75f);
     public override bool CanDragAndResize => true;
 
-    public Toggle FishingToggle = null!;
-    public Toggle DungeonToggle = null!;
-
     protected override void ConstructPanelContent()
     {
         {
             var fishingSection = UIFactory.CreateVerticalGroup(
                 ContentRoot, "FishingSection",
-                forceWidth: true,
-                forceHeight: false,
-                childControlWidth: true,
-                childControlHeight: true,
-                spacing: 4,
-                padding: new Vector4(8, 8, 8, 8),
-                bgColor: new Color(0.1255f, 0.1255f, 0.1255f, 1f)
+                true,
+                false,
+                true,
+                true,
+                4,
+                new Vector4(8, 8, 8, 8),
+                new Color(0.1255f, 0.1255f, 0.1255f, 1f)
             );
 
-            UIFactory.CreateToggle(fishingSection, "FishingToggle", out FishingToggle, out Text label);
+            UIFactory.CreateToggle(fishingSection, "FishingToggle", out FishingToggle, out var label);
             label.text = "Auto Fishing";
             FishingToggle.SetIsOnWithoutNotify(false);
             FishingToggle.onValueChanged.AddListener(isOn =>
@@ -49,16 +49,16 @@ public class Panel(UIBase owner) : PanelBase(owner)
         {
             var dungeonSection = UIFactory.CreateVerticalGroup(
                 ContentRoot, "DungeonSection",
-                forceWidth: true,
-                forceHeight: false,
-                childControlWidth: true,
-                childControlHeight: true,
-                spacing: 4,
-                padding: new Vector4(8, 8, 8, 8),
-                bgColor: new Color(0.1255f, 0.1255f, 0.1255f, 1f)
+                true,
+                false,
+                true,
+                true,
+                4,
+                new Vector4(8, 8, 8, 8),
+                new Color(0.1255f, 0.1255f, 0.1255f, 1f)
             );
 
-            UIFactory.CreateToggle(dungeonSection, "DungeonToggle", out DungeonToggle, out Text label);
+            UIFactory.CreateToggle(dungeonSection, "DungeonToggle", out DungeonToggle, out var label);
             label.text = "Auto Dungeon";
             DungeonToggle.SetIsOnWithoutNotify(false);
             DungeonToggle.onValueChanged.AddListener(isOn =>
@@ -76,6 +76,6 @@ public class Panel(UIBase owner) : PanelBase(owner)
         var project = GameData.instance.PROJECT;
         DungeonToggle.interactable = project.dungeon != null;
         FishingToggle.interactable =
-            project.instance.instanceFishingInterface !=null && Utils.HasBait();
+            project.instance.instanceFishingInterface != null && Utils.HasBait();
     }
 }

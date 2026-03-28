@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Sukaretto
 // SPDX-License-Identifier: AGPL-3.0-only
 
-using MelonLoader;
-using HarmonyLib;
+using antihero.Patches;
 using com.ultrabit.bitheroes.core;
 using com.ultrabit.bitheroes.ui;
 using com.ultrabit.bitheroes.ui.instance.fishing;
-using antihero.Patches;
+using HarmonyLib;
+using MelonLoader;
 
 namespace antihero.States;
 
@@ -18,7 +18,7 @@ public class FishingState : State
     {
         Harmony.Patch(
             AccessTools.Method(typeof(WindowGenerator), nameof(WindowGenerator.NewFishingCaptureWindow)),
-            prefix: new HarmonyMethod(typeof(FishingPatches), nameof(FishingPatches.OnNewFishingCaptureWindow))
+            new HarmonyMethod(typeof(FishingPatches), nameof(FishingPatches.OnNewFishingCaptureWindow))
         );
         Harmony.Patch(
             AccessTools.Method(typeof(InstanceFishingInterface), nameof(InstanceFishingInterface.DoFishingStart)),
@@ -30,14 +30,15 @@ public class FishingState : State
         );
         Harmony.Patch(
             AccessTools.Method(typeof(InstanceFishingInterface), "OnFishingBobberLanded"),
-            prefix: new HarmonyMethod(typeof(FishingPatches), nameof(FishingPatches.OnFishingBobberLanded))
+            new HarmonyMethod(typeof(FishingPatches), nameof(FishingPatches.OnFishingBobberLanded))
         );
         Harmony.Patch(
             AccessTools.Method(typeof(InstanceFishingInterface), nameof(InstanceFishingInterface.DoFishingCatchStart)),
             postfix: new HarmonyMethod(typeof(FishingPatches), nameof(FishingPatches.OnDoFishingCatchStart))
         );
         Harmony.Patch(
-            AccessTools.Method(typeof(InstanceFishingInterface), nameof(InstanceFishingInterface.DoFishingCatchComplete)),
+            AccessTools.Method(typeof(InstanceFishingInterface),
+                nameof(InstanceFishingInterface.DoFishingCatchComplete)),
             postfix: new HarmonyMethod(typeof(FishingPatches), nameof(FishingPatches.OnDoFishingCatchComplete))
         );
 

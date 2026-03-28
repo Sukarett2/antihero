@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Sukaretto
 // SPDX-License-Identifier: AGPL-3.0-only
 
-using HarmonyLib;
 using com.ultrabit.bitheroes.ui.menu;
+using HarmonyLib;
 
 namespace antihero.Patches;
 

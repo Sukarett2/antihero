@@ -1,15 +1,16 @@
 // SPDX-FileCopyrightText: 2026 Sukaretto
 // SPDX-License-Identifier: AGPL-3.0-only
 
+using System.Collections;
+using antihero.States;
+using com.ultrabit.bitheroes.model.fishing;
+using com.ultrabit.bitheroes.model.item;
+using com.ultrabit.bitheroes.ui;
+using com.ultrabit.bitheroes.ui.instance.fishing;
 using HarmonyLib;
 using MelonLoader;
 using UnityEngine;
-using System.Collections;
-using com.ultrabit.bitheroes.ui;
-using com.ultrabit.bitheroes.ui.instance.fishing;
-using com.ultrabit.bitheroes.model.fishing;
-using com.ultrabit.bitheroes.model.item;
-using antihero.States;
+using Random = UnityEngine.Random;
 
 namespace antihero.Patches;
 
@@ -30,6 +31,7 @@ public static class FishingPatches
             Mod.Instance.Transition(new IdleState());
             return;
         }
+
         MelonCoroutines.Start(DeferredDoFishingCasting(__instance));
     }
 
@@ -47,7 +49,7 @@ public static class FishingPatches
             ?.gameObject.SetActive(false);
 
         var player = __instance.GetPlayer();
-        var distance = UnityEngine.Random.Range(player.GetFishingDistanceMin(), player.GetFishingDistanceMax());
+        int distance = Random.Range(player.GetFishingDistanceMin(), player.GetFishingDistanceMax());
         __instance.instance.extension.DoFishingCast(distance);
     }
 

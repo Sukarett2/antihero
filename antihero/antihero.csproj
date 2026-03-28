@@ -13,8 +13,8 @@
         <GamePath Condition="$([MSBuild]::IsOSPlatform('Linux'))">$(HOME)/.local/share/Steam/steamapps/common/Bit Heroes</GamePath>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Lib.Harmony" Version="2.3.3" />
-        <PackageReference Include="rainbowblood.UniverseLib.Mono" Version="2.*" />
+        <PackageReference Include="Lib.Harmony" Version="2.3.3"/>
+        <PackageReference Include="rainbowblood.UniverseLib.Mono" Version="2.*"/>
     </ItemGroup>
     <ItemGroup>
         <Reference Include="MelonLoader">
