@@ -10,7 +10,6 @@ using com.ultrabit.bitheroes.ui.instance.fishing;
 using HarmonyLib;
 using MelonLoader;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace antihero.Patches;
 
@@ -37,7 +36,8 @@ public static class FishingPatches
 
     private static IEnumerator DeferredDoFishingCasting(InstanceFishingInterface instance)
     {
-        yield return new WaitForSeconds(1f); // TODO: Check if state changed for a return.
+        yield return new WaitForSeconds(1f);
+        if (Mod.Instance.State is not FishingState) yield break;
         instance.DoFishingCasting();
     }
 
@@ -49,7 +49,7 @@ public static class FishingPatches
             ?.gameObject.SetActive(false);
 
         var player = __instance.GetPlayer();
-        int distance = Random.Range(player.GetFishingDistanceMin(), player.GetFishingDistanceMax());
+        int distance = UnityEngine.Random.Range(player.GetFishingDistanceMin(), player.GetFishingDistanceMax());
         __instance.instance.extension.DoFishingCast(distance);
     }
 

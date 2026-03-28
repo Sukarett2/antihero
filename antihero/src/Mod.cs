@@ -17,21 +17,13 @@ namespace antihero;
 
 public class Mod : MelonMod
 {
-    private bool _isGameLoaded;
-
-    private State _state = new IdleState();
-    private UIBase? _ui;
     public static Mod Instance { get; private set; } = null!;
+    public State State = new IdleState();
     public Panel? Panel { get; private set; }
+    private bool _isGameLoaded;
+    private UIBase? _ui;
 
     public override void OnInitializeMelon() => Instance = this;
-
-    private void OnInitializeUniverse()
-    {
-        _ui = UniversalUI.RegisterUI("com.sukaretto.antihero", null);
-        Panel = new Panel(_ui);
-        MelonLogger.Msg("ui initialized.");
-    }
 
     public override void OnUpdate()
     {
@@ -45,13 +37,20 @@ public class Mod : MelonMod
         // Panel exists only when game is loaded.
         if (Panel != null && Input.GetKeyDown(KeyCode.F9)) Panel.SetActive(!Panel.Enabled);
 
-        _state.OnUpdate();
+        State.OnUpdate();
+    }
+
+    private void OnInitializeUniverse()
+    {
+        _ui = UniversalUI.RegisterUI("com.sukaretto.antihero", null);
+        Panel = new Panel(_ui);
+        MelonLogger.Msg("ui initialized.");
     }
 
     public void Transition(State next)
     {
-        _state.OnExit();
-        _state = next;
-        _state.OnEnter();
+        State.OnExit();
+        State = next;
+        State.OnEnter();
     }
 }
